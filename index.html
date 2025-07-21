@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CamLess - Revolutionary Camera-Free Photography</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 3rem;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6b6b, #feca57, #48dbfb, #ff9ff3);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShift 3s ease-in-out infinite;
+            margin-bottom: 0.5rem;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1rem;
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .instructions {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .step {
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            padding: 0.5rem;
+        }
+
+        .step-number {
+            display: inline-block;
+            background: #ff6b6b;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .camera-button {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 1.5rem 3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(255, 107, 107, 0.4);
+            margin: 2rem 0;
+        }
+
+        .camera-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(255, 107, 107, 0.6);
+        }
+
+        .camera-button:active {
+            transform: translateY(-1px);
+        }
+
+        .loading {
+            display: none;
+            margin: 2rem 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid #ff6b6b;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .result {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .result img {
+            max-width: 300px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 1rem;
+        }
+
+        .reveal-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #feca57;
+        }
+
+        @media (max-width: 768px) {
+            .logo { font-size: 2.5rem; }
+            .container { padding: 1rem; }
+            .camera-button { font-size: 1.2rem; padding: 1rem 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">CamLess</div>
+            <div class="tagline">Revolutionary Camera-Free Photography</div>
+            <div class="subtitle">Capture your essence without any camera technology!</div>
+        </div>
+
+        <div class="instructions" id="instructions">
+            <div class="step">
+                <span class="step-number">1</span>
+                Get as close to your screen as possible
+            </div>
+            <div class="step">
+                <span class="step-number">2</span>
+                Look directly at the center of your screen
+            </div>
+            <div class="step">
+                <span class="step-number">3</span>
+                Press the button below to capture your image
+            </div>
+        </div>
+
+        <button class="camera-button" id="takePhoto" onclick="takePhoto()">
+            📸 TAKE PICTURE
+        </button>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <div>Analyzing facial features...</div>
+            <div id="loadingText">Calibrating camera-free sensors...</div>
+        </div>
+
+        <div class="result" id="result">
+            <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop&crop=face" alt="Your photo" id="resultImage">
+            <div class="reveal-text">Here's your picture! 🐄</div>
+        </div>
+    </div>
+
+    <script>
+        const loadingMessages = [
+            "Analyzing facial features...",
+            "Calibrating camera-free sensors...",
+            "Processing biometric data...",
+            "Enhancing image quality...",
+            "Applying beauty filters...",
+            "Almost ready..."
+        ];
+
+        function takePhoto() {
+            const button = document.getElementById('takePhoto');
+            const instructions = document.getElementById('instructions');
+            const loading = document.getElementById('loading');
+            const result = document.getElementById('result');
+            const loadingText = document.getElementById('loadingText');
+
+            // Hide instructions and button
+            instructions.style.display = 'none';
+            button.style.display = 'none';
+            
+            // Show loading
+            loading.style.display = 'block';
+
+            let messageIndex = 0;
+            const messageInterval = setInterval(() => {
+                if (messageIndex < loadingMessages.length) {
+                    loadingText.textContent = loadingMessages[messageIndex];
+                    messageIndex++;
+                } else {
+                    clearInterval(messageInterval);
+                }
+            }, 800);
+
+            // Show result after delay
+            setTimeout(() => {
+                loading.style.display = 'none';
+                result.style.display = 'block';
+                
+                // Add a reset button after showing result
+                setTimeout(() => {
+                    const resetBtn = document.createElement('button');
+                    resetBtn.textContent = '📸 Take Another Picture';
+                    resetBtn.className = 'camera-button';
+                    resetBtn.style.marginTop = '1rem';
+                    resetBtn.onclick = () => location.reload();
+                    result.appendChild(resetBtn);
+                }, 2000);
+            }, 5000);
+        }
+    </script>
+</body>
+</html>

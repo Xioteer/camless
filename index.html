@@ -136,8 +136,8 @@
         }
 
         .result img {
-            max-width: 500px;
-            width: 90%;
+            max-width: 1200px;
+            width: 95%;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin-bottom: 1rem;
@@ -190,8 +190,8 @@
         </div>
 
         <div class="result" id="result">
-            <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=400&h=300&fit=crop&crop=face" alt="Your photo" id="resultImage">
-            <div class="reveal-text">Here's your picture! 🐄</div>
+            <img src="https://images.unsplash.com/photo-1516467508483-a7212febe31a?w=1200&h=900&fit=crop&crop=face" alt="Your photo" id="resultImage">
+            <div class="reveal-text">HAHAHA LOL 😂🤣😭 GOT YOU!</div>
         </div>
     </div>
 
@@ -234,14 +234,14 @@
                 loading.style.display = 'none';
                 result.style.display = 'block';
                 
-                // Add a reset button after showing result
+                // Add a follow button after showing result
                 setTimeout(() => {
-                    const resetBtn = document.createElement('button');
-                    resetBtn.textContent = '📸 Take Another Picture';
-                    resetBtn.className = 'camera-button';
-                    resetBtn.style.marginTop = '1rem';
-                    resetBtn.onclick = () => location.reload();
-                    result.appendChild(resetBtn);
+                    const followBtn = document.createElement('button');
+                    followBtn.textContent = '😅 If you fell for it, follow me on X!';
+                    followBtn.className = 'camera-button';
+                    followBtn.style.marginTop = '1rem';
+                    followBtn.onclick = () => window.open('https://x.com/Xioteer', '_blank');
+                    result.appendChild(followBtn);
                 }, 2000);
             }, 5000);
         }
